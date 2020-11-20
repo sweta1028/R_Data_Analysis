@@ -1,0 +1,349 @@
+#Name: Sweta Kumari
+#VECTORS AND LOGICAL ARITHMETIC
+#1. To find square root, sqrt function is used. To find cube root of 8
+```{r}
+8^(1/3)
+```
+#2. If you are conducting t-test, abs function is used to find the absolute value.Let say value of Ya=5.7, Yb=6.8 and SEd=0.38
+```{r}
+abs(5.7-6.8)/0.38
+```
+#3. To know the inetger part of the division. Divide 119 by 13.
+```{r}
+119%/%13
+```
+#4. To know the remainder when 119 is divided by 13.
+```{r}
+119%%13
+```
+#5. To round off the numbers.floor is greatest inetger function while ceiling is next integer function.
+```{r}
+floor(5.7)
+ceiling(5.7)
+```
+#Round to the nearest integer: We can use floor command when adding 0.5 to the number. Define function as rounded as follows:
+```{r}
+rounded<-function(x)  floor(x+0.5)
+rounded(5.7)
+```
+#6. Generating sequences:To generate a equal spaced sequence where increment is 1, use colon operator:
+```{r}
+1:7
+```
+#To generate a sequnce where increment or decrement will be given by 3rd argument:
+```{r}
+seq(0,1,0.1)
+seq(5,-5,-1) 
+```
+#To generate a sequence where you can define which number to start, what would be the steps, what would be the length of sequnce.
+```{r}
+seq(from=5,by= -1, along=1:20)
+```
+#7. Generating repeats:Repeat 5.3, 17 times. First parameter should be number and second parameter should be the repeat.
+```{r}
+rep(5.3,17)
+```
+#Repeat numbers 1 to 6 twice
+```{r}
+rep(1:6,2)
+```
+#Repeat each number three times starting from 1 to 6.
+```{r}
+rep(1:6,rep(3,6))
+```
+#Generate levels: In below example, 18 is the length of the whole vector
+```{r}
+gl(6,3,18)
+```
+#Repeat all numbers with different number of times:For example,Repeat 1 for one time, repeat 2 for two times, 3 for three times and so on.
+```{r}
+rep(1:6,1:6)
+```
+#Another scenario, repeat each number seprately. We use concatenate function where we specify repeat for each number. List of numbers in the concatenate should be equal to the length of the sequence:
+```{r}
+rep(1:6,c(1,2,3,3,2,1))
+```
+#Repeat factor level that are text:
+```{r}
+rep(c("monoecious","dioecious","hermaphrodite","agamic"),c(3,2,7,3))
+```
+#8. Vectors: Let say y has values as 7,5,7,2,4,6,1,6,2,3.
+```{r}
+y<-c(7,5,7,2,4,6,1,6,2,3)
+```
+#To repeat the same set of value and make vector twice as y then use y<-c(y,y).
+```{r}
+y<-c(y,y)
+```
+#To find the variance of vector y
+```{r}
+sum((y-mean(y))^2)/(length(y)-1)
+```
+#Or use built in function for variance
+```{r}
+var(y)
+```
+#9.Sorting, Ranking and Ordering:We define data with 11 values as shown below. 
+```{r}
+data<-c(7,4,6,8,9,1,0,3,2,5,0) 
+```
+#rank function will rank the values in ascending order. For instance, 7 is ranked as 9th as there are 8 values which is lesser than 7.
+```{r}
+ranks<-rank(data)
+ranks
+```
+#sort function will sort the value in ascending order.
+```{r}
+sorted<-sort(data)
+sorted
+```
+#order function see the location of the data. For instance, number 8 is in 4th location in sorted data so, it will show 4 for number 8 in the order.
+```{r}
+ordered<-order(data)
+ordered
+```
+#Then use all three functions and make a data frame with the help of data and results of all three functions.
+```{r}
+view<-data.frame(data,ranks,sorted,ordered) 
+view 
+```
+#10. Data frames: Use read.table to read the dataframe in the R. Use attach function so that the variable name is accessible. Use name fuction to know the variable names. 
+```{r}
+worms<-read.table("C:\\Users\\Sweta\\Documents\\Data\\worms.txt",header=T,row.names=1) 
+attach(worms)
+names(worms)
+```
+#To see the content of the dataframe, type the name of the data frame.To summarize the dataset, use summary function. 
+```{r}
+worms
+summary(worms)
+```
+#11. Selecting parts of a dataframe: Subscript.
+#To select 1st three columns in the dataframe, use [,1:3]. 
+```{r}
+worms[,1:3]
+```
+#To select middle 10 rows of the data frame, use [5:15,]
+```{r}
+worms[5:15,]
+```
+#To show the rows where Area > 3 and Slope < 3, use [Area>3 & Slope <3,]
+```{r}
+worms[Area>3 & Slope <3,] 
+```
+#12. Sorting:To select the rows where dataframe is sorted by Area
+```{r}
+worms[order(worms[,1]),1:6]
+```
+#To select Field Name and Worm.density from dataframe where Soil pH is in descending order.
+```{r}
+worms[rev(order(worms[,4])),c(4,6)] 
+```
+#Use read.table to read the dataframe in the R. Use attach function so that the variable name is accessible. Use name fuction to know the variable names.To see the content of the dataframe, type the name of the data frame.
+```{r}
+houses<-read.table("C:\\Users\\Sweta\\Documents\\Data\\houses.txt",header=T) 
+names(houses) 
+attach(houses)
+houses 
+```
+#To see the location of the cheapest price in the dataframe,Use order(price). 
+```{r}
+order(Price)
+```
+#To know which location has lowest price, use Location[order(Price)].
+```{r}
+Location[order(Price)]
+```
+#To know which location has highest price, use Location[rev(order(Price))]
+```{r}
+Location[rev(order(Price))]
+```
+#13. Subscripts with vectors: Define x and sum all the elements of x
+```{r}
+x<-0:10
+sum(x)
+```
+#Numbers lesser than 5.
+```{r}
+sum(x<5)
+```
+#To find the sum of the values which are lesser than 5.
+```{r}
+sum(x[x<5])
+```
+#To see the logical condition for x<5.
+```{r}
+x<5 
+```
+#To represent true and false with 0 and 1.
+```{r}
+1*(x<5) 
+```
+#To multiply the value of x to the logical vector
+```{r}
+x*(x<5)
+```
+#To sum up the values of the number for x*(x<5)
+```{r}
+sum(x*(x<5)) 
+```
+#To define values of y
+```{r}
+y<-c(8,3,5,7,6,6,8,9,2,3,9,4,10,4,11)
+```
+#Sort (ascending sequence) the values of y
+```{r}
+sort(y)
+```
+#Use rev function for descending sequence
+```{r}
+rev(sort(y))
+```
+#To know the 2nd element in the sorted vector:
+```{r}
+rev(sort(y))[2]
+```
+#To know the first three element in the sorted vector:
+```{r}
+rev(sort(y))[1:3]
+```
+#To sum the first three elements of the sorted vector:
+```{r}
+sum(rev(sort(y))[1:3])
+```
+#14. Addresses:To know which subscripts contain values greater than 5 in vector y
+```{r}
+which(y>5)
+```
+#To know which element is greater than 5 in vector y
+```{r}
+y[y>5]
+```
+#To know if each element is greater than 5 in vector y
+```{r}
+y>5
+```
+#15. Samples:Sampling without replacement:To shuffle the content of y in random sequence, but keep the same value.
+```{r}
+sample(y)
+sample(y)
+```
+#Sampling with replacement:To shuffle the content of y in random sequence
+```{r}
+sample(y,replace=T)
+sample(y,replace=T)
+```
+#16. Logical arithmetic:#Add 1 if y = 3
+```{r}
+y+(y==3) 
+```
+#define ys where ys contains values of y<5
+```{r}
+ys<-y[y<5]
+ys
+```
+#define yb where yb contains values of y>=5
+```{r}
+yb<-y[y>=5]
+yb
+```
+#Define extreme values with respect to mean.
+```{r}
+sum(y> mean(y)+2 | y < mean(y)-2 )
+```
+#To get the sum of y values which are extreme
+```{r}
+sum(y[y> mean(y)+2 | y < mean(y)-2] )
+```
+#17.IF:Subtitute zero wherever y has negative value by old method
+```{r}
+y<-c(-1, 1, 2, 3, 4, 5, -6, -8)
+for (i in 1:length(y))
+{ if(y[i] < 0 ) y[i] <- 0 }
+y
+```
+#Subtitute zero wherever y has negative value.
+```{r}
+y[ y< 0 ] <- 0
+y
+```
+#18. ifelse: replace negative value by -1 and positive value by 1.
+```{r}
+y<-c(-1, 1, 2, 3, 4, 5, -6, -8)
+y <- ifelse( y < 0 , -1, 1 )
+y
+```
+#19. Trimming vectors using [minus]Find 4th element in vector x
+```{r}
+x<- c(5,8,6,7,1,5,3)
+x[4]
+```
+#Create a vector y which contains value of x except the first value
+```{r}
+y<-c(8,3,5,7,6,6,8,9,2,3,9,4,10,4,11)
+y<-x[-1] 
+y
+```
+#Find trimmed mean where 1st and last value should be ignored.
+```{r}
+trim.mean <- function (x) mean(sort(x)[-c(1,length(x))])
+trim.mean(x)
+```
+#20. Plotting mathematical functions: Plot a exponential graph.
+#Define x, then write expression for y. Plot line graph for x and y (type="l" for line graph)
+```{r}
+x<-0:50
+y<-3*(1-exp(-0.1*x))
+plot(x,y,type="l") 
+```
+
+#Plot mutiple curve in the same graph:Define x with seq function and y as exponential expression. Plot the graph for x and y(set the ylim from 0 to 1)#Plot y2 and y3 in the same graph with different expression and linestyle.
+```{r}
+x<-seq(-5,5,.1) 
+y<-exp(.1+.4*x)/(1+exp(.1+.4*x))
+plot(x,y,type="l",ylim=c(0,1))
+y2<-exp(.1+.6*x)/(1+exp(.1+.6*x))
+lines(x,y2,lty=2)
+y3<-exp(.1+1.6*x)/(1+exp(.1+1.6*x))
+lines(x,y3,lty=4)
+```
+
+#21. Matrices: Convert a vector into matrix using matrix function.
+```{r}
+y<-c( 8,  3,  5,  7,  6,  6,  8,  9,  2,  3,  9,  4, 10,  4, 11) 
+y
+m<-matrix(y,nrow=5)
+m
+```
+#22. Matrix arithmetic:Define L and convert into matrix where nrow =4
+```{r}
+L<-c(0,0.7,0,0,6,0,0.5,0,3,0,0,0.3,1,0,0,0)
+L<-matrix(L,nrow=4)
+L
+```
+#Define n as column vector
+```{r}
+n<-c(45,20,17,3)
+n<-matrix(n,ncol=1)
+n
+```
+#matrix multiplication of L and n
+```{r}
+L %*% n
+45*0+20*6+17*3+3*1
+```
+#23. Solving systems of linear equations : Consider two equations : 3x+4y =12 and x+2y=8
+#Define A where all coefficients of x and y for both euqations are present as a matrix. 
+```{r}
+A<-matrix(c(3,1,4,2),nrow=2)
+A
+```
+#Define kv where known values are present. 
+```{r}
+kv<-matrix(c(12,8),nrow=2)
+kv
+```
+#Use solve function to get values of x and y.
+```{r}
+solve(A,kv)
+```

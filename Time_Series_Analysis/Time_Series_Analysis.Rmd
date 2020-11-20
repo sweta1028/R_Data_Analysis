@@ -1,0 +1,58 @@
+#Name: Sweta Kumari
+#Time series analysis
+#Read the global temperture file and check the columns name.
+#1. Read the global temperture file and check the columns name.
+```{r}
+GlobalTemperature<-read.csv("C:\\Users\\Sweta\\Documents\\Data\\GlobalTemperatures.csv",header=T)
+attach(GlobalTemperature)
+names(GlobalTemperature)
+```
+
+#2. Importing librarries
+```{r}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(fpp2)
+library(zoo)
+```
+
+#3.#To review the changes in the 'LandAverageTemperature', we plot the graph of LandAverageTemperature vs time.
+#Analysis: From the graph, there is no outlier observed in the graph. 
+#The Land Average Temperature is between 0 and 16 for the period of 1850 to 2015.
+#As the years passed, the average tempertaure of land has increased.
+#So, Average temperature is not stationary and showing upward trend.
+```{r}
+Temperature <- GlobalTemperature %>% mutate(Time_year= year(dt)) %>% filter(Time_year>1849)
+Temperature %>% group_by(Time_year) %>% ggplot(aes( x=Time_year,y=LandAverageTemperature,Colour=LandAverageTemperature)) + geom_line()
+```
+#4. To review the changes in the 'LandAndOceanAverageTemperature', we plot the graph of LandAndOceanAverageTemperature vs time.
+#Analysis: From the graph, there is no outlier observed in the graph. 
+#The Land and Ocean Average Temperature is between 12 and 18 for the period of 1850 to 2015.
+#As the years passed, the average tempertaure has increased.
+#So, Average temperature is not stationary and showing upward trend.
+#We will check the seasonality with help of moving average method in last section
+```{r}
+Temperature %>% group_by(Time_year) %>% ggplot(aes( x=Time_year,y=LandAndOceanAverageTemperature,Colour=LandAndOceanAverageTemperature)) + geom_line()
+```
+
+#5. To review the changes in the 'LandMaxTemperature', we plot the graph of LandMaxTemperature vs time.
+#Analysis: From the graph, there is no outlier observed in the graph. 
+#The Land Maximum Temperature is between 6 and 21 for the period of 1850 to 2015.
+#As the years passed, the maximum tempertaure of land has increased.
+#So, Land Max temperature is not stationary and showing upward trend.
+```{r}
+Temperature %>% group_by(Time_year) %>% ggplot(aes( x=Time_year,y=LandMaxTemperature,Colour=LandMaxTemperature)) + geom_line()
+```
+
+#6.Running a 10-year moving average on LandAndOceanAverageTemperature.
+#Analysis: Moving average helped to smooth the graph. Graph is showing strong seasonality with upward trend.
+#In 1880 and 1950, there is increment in temperature. From 1980, there is continuous increment in the temperature and it has crossed 16 degree in 2015.
+```{r}
+LandTemperature <- GlobalTemperature  %>% mutate(LandAndOceanAverageTemperature = rollmean(LandAndOceanAverageTemperature, k = 120, fill = NA, align = "right"), Time_year=year(dt))
+LandTemperature %>% group_by(Time_year) %>% filter(Time_year>1849) %>% ggplot(aes( x=Time_year,y=LandAndOceanAverageTemperature,Colour=LandAndOceanAverageTemperature)) + geom_line()
+```
+
+
+

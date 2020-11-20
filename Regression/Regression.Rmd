@@ -1,0 +1,133 @@
+#Name: Sweta Kumari 
+#REGRESSION
+
+#1. Data Inspection:Read the regression file and plot the graph between tannin and growth. Find the mean of growth then plot line with slope as 0 and inetrcept as mean of growth
+```{r}
+regression<-read.csv("C:\\Users\\Sweta\\Documents\\Data\\regression.csv",header=T)
+attach(regression)
+names(regression)
+plot(tannin,growth)
+mean(growth)
+abline(6.889,0)
+```
+
+#The quantile of Student’s t distribution (2-tailed, alpha= 0.025) with n-2 degrees of freedom.
+```{r}
+pairs(regression,panel = panel.smooth)
+qt(.975,7)
+```
+#Calculations involved in linear regression
+```{r}
+regression
+```
+#Let say x is tannin and y is growth
+#Find sum of x and sum of x^2
+```{r}
+sum(tannin);sum(tannin^2)
+```
+#Find sum of y and sum of y^2
+```{r}
+sum(growth);sum(growth^2)
+```
+#Find sum of xy
+```{r}
+sum(tannin*growth)
+```
+#quantiles of the F distribution
+```{r}
+qf(0.95,1,7)
+```
+#The probability of getting an F value of 30.98 if the null hypothesis of b = 0 is true.
+```{r}
+1-pf(30.98,1,7)
+```
+#To calculate the 95% confidence intervals: 2-tailed value of Student's t with d.f=7.
+```{r}
+qt(.975,7)
+```
+#Using R for regression: Obtain scatter plot then add fitted line abline directive with lm (linear model)
+```{r}
+plot(tannin,growth)
+abline(lm(growth~tannin))
+```
+
+#Let's called model object as "model"
+```{r}
+model<-lm(growth~tannin)
+```
+#Summarize the model:
+```{r}
+summary(model)
+```
+#Plot the model with two graphs in two rows
+```{r}
+par(mfrow=c(2,2))
+plot(model) 
+```
+
+#the predicted value of y hat  at tannin = 5.5%
+```{r}
+11.7556-1.2167*5.5
+```
+#Alternate way is to use predict directive with object called model
+```{r}
+predict(model,list(tannin=5.5))
+```
+#We will use mfrow to plot one graph in a row. If there is any x and y vector exist, it can be removed by rm:
+```{r}
+par(mfrow=c(1,1))
+rm(x,y)
+```
+#Transformation of non-linear responses
+```{r}
+decay<-read.csv("C:\\Users\\Sweta\\Documents\\Data\\decay.csv",header=T)
+attach(decay)
+names(decay)
+x<-time
+y<-amount
+plot(x,y)
+abline(lm(y~x))
+```
+
+#Let's called model object as result
+```{r}
+result<-lm(y~x)
+summary(result)
+```
+
+#Diagnostic plot
+```{r}
+plot(result) 
+```
+
+#Plot the graph for x vs ln y
+```{r}
+plot(x,y,log="y")
+```
+
+#Let's say new model object is "transformed"
+```{r}
+transformed <- lm(log(y)~x) 
+summary(transformed) 
+```
+
+#Let's check the diagmostic plot:
+```{r}
+plot(transformed)
+```
+
+#Let's redraw the scatter plot for x and y
+```{r}
+plot(x,y)
+```
+
+#Let's generate sequence from 0 to 30 with inetrval 0.1 and predict the respective value of y:
+```{r}
+smoothx<-seq(0,30,0.1) 
+smoothy<-exp(predict(transformed,list(x=smoothx)))
+```
+#Draw the fitted line:
+```{r}
+plot(x,y)
+lines(smoothx,smoothy)
+```

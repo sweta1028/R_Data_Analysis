@@ -1,0 +1,169 @@
+#Name: Sweta Kumari 
+#ANALYSIS OF VARIANCE
+
+#1. One-way Analysis of Variance:
+#Read the oneway file.
+```{r}
+oneway<-read.table("C:\\Users\\Sweta\\Documents\\Data\\oneway.txt",header=T)
+attach(oneway)
+names(oneway) 
+```
+#Calculate mean of growth using tapply function:
+```{r}
+tapply(Growth,Photoperiod,mean)
+```
+#To change the order of the output in Very.short,Short,Long,Very.long
+```{r}
+Photoperiod<-ordered(Photoperiod,levels=c("Very.short","Short","Long","Very.long"))
+```
+#Caluclate mean for new ordered output:
+```{r}
+tapply(Growth,Photoperiod,mean) 
+```
+#To find Photoperiod is factor variable
+```{r}
+is.factor(Photoperiod) 
+```
+#Use aov directive to show the anova table for the "oneway.txt" dataset.Capture the result in one.way object.
+```{r}
+one.way<-aov(Growth~Photoperiod) 
+```
+#Use summary function to see the result of anova table
+```{r}
+summary(one.way) 
+```
+#2. Two way analysis of variance
+#Remove Growth and Photoperiod variables and detach the oneway.txt dataset
+```{r}
+rm("Growth", "Photoperiod")
+detach(oneway)
+```
+#Read the twoway file.
+```{r}
+twoway<-read.table("C:\\Users\\Sweta\\Documents\\Data\\twoway.txt",header=T)
+attach(twoway)
+names(twoway)
+```
+#Find the mean growth rate for 6 genotypes
+```{r}
+tapply(Growth,Genotype,mean) 
+```
+#Use aov directive to show the anova table for the "twoway.txt" dataset.Capture the result in two.way object.
+```{r}
+two.way<-aov(Growth~Genotype+Photoperiod) 
+```
+#Use summary function to see the result of anova table
+```{r}
+summary(two.way) 
+```
+#3. Two-way Factorial Analysis of Variance
+#Read the factorial file.
+```{r}
+factorial<-read.table("C:\\Users\\Sweta\\Documents\\Data\\factorial.txt",header=T)
+factorial
+attach(factorial) 
+```
+#Use aov directive to show the anova table for the "factorial.txt" dataset.Capture the result in model object.
+```{r} 
+model<-aov(growth~diet*coat) 
+```
+#Use summary function to see the result of anova table
+```{r}
+summary(model)
+```
+
+#Find sum of growth for all 6 combinations
+```{r}
+tapply(growth,list(coat,diet),sum)
+```
+
+#Sum of squares of subtotal
+```{r}
+SSAB<-sum(as.vector(tapply(growth,list(coat,diet),sum))^2)/2 
+```
+
+#Correction factor
+```{r}
+CF<-sum(growth)^2/length(growth) 
+```
+#Fins sum of squares (SSAB–SSA-SSB-CF)
+```{r}
+SSAB-CF-2.66-2.61333 
+```
+#Update model and remove interaction term
+```{r}
+model2<-update(model ,  ~ .  -  diet:coat) 
+```
+#Use anova directive to compare both models.
+```{r}
+anova(model,model2) 
+```
+#Summary of variance table for model2
+```{r}
+summary(model2)
+```
+#Remove diet variable as p value is not significant.
+```{r}
+model3<-update(model2, ~. -diet) 
+```
+#Compare model3 and model2
+```{r}
+anova(model2,model3)
+```
+#Summary of model3
+```{r}
+summary(model3) 
+```
+#To find mean for all three diet
+```{r}
+tapply(growth,diet,mean)
+```
+#New factor for diet: 1 for A, B and 2 for C
+```{r}
+diet2<-factor(1+(diet=="C"))
+diet2
+```
+#Update model3 and add diet2
+```{r}
+model4<-update(model3, ~. +diet2) 
+```
+#Compare model3 and model4
+```{r}
+anova(model3,model4) 
+```
+#To check for interaction between diet2 and coat
+```{r}
+model5<-update(model4, ~. +diet2:coat)
+```
+#Compare model 4 and model5
+```{r}
+anova(model4,model5) 
+```
+#model5 is inadequate so model4 is minimal adequate model
+```{r}
+summary(model4)
+```
+#3. Three-way Factorial Analysis of Variance
+#Read the file
+```{r}
+Daphnia.data<-read.table("C:\\Users\\Sweta\\Documents\\Data\\Daphnia.txt",header=T)
+attach(Daphnia.data)
+names(Daphnia.data) 
+```
+#Use aov directive to show the anova table for the "factorial.txt" dataset.Capture the result in factorial object.
+```{r}
+factorial<-aov(Growth.rate~Water*Detergent*Daphnia) 
+``` 
+#Summary function for anova table
+```{r}
+summary(factorial)
+```
+#Create a 2dimensional table of mean growth rates
+```{r}
+tapply(Growth.rate,list(Detergent,Daphnia),mean) 
+```
+#To show the interaction effects
+```{r}
+interaction.plot(Detergent,Daphnia,Growth.rate) 
+```
+

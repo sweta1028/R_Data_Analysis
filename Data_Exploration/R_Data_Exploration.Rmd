@@ -1,0 +1,282 @@
+#Name: Sweta Kumari
+#PLOT GRAPHICAL METHODS OF  DATA EXPLORATION 
+
+#1.Scatterplots for Continuous Explanatory Variables
+#a.To make a vector that contains numbers from 1 to 10 in series.
+```{r}
+x<- 1:10
+```
+
+#here, X is the explanatory variable. To see the content of the vector X.
+```{r}
+x
+```
+
+#Consider Y as response variable. To make a vector, we use concatenate directive (c).
+```{r}
+y<- c(11,12,9,7,5,8,4,4,5,3)
+y
+```
+
+#Use plot directive for scatter plot
+```{r}
+plot(x,y)
+```
+
+#To change the lables of x and y with explantory Variable and Response variable respectively:
+```{r}
+plot(x,y,ylab="Response Variable",xlab="Explantory Variable")
+```
+
+#Add Plotting character3 to change the plotting symbols to plus sign in the scatter plot
+```{r}
+plot(x,y,pch=3,ylab="Response Variable",xlab="Explantory Variable")
+```
+
+#Add Plotting character2 to change the plotting symbols to triangle sign in the scatter plot
+```{r}
+plot(x,y,pch=2,ylab="Response Variable",xlab="Explantory Variable")
+```
+
+#2.Adding lines to scatter plot: two types of lines a. Computer estimated line b. Line specified by ourselves.
+#a.Regression line: y=a+bx where a: intercept, b= slope of the line.Linear model lm describe the two parameters of linear regression(a and b) with the standard argument.
+#To draw a regression line, abline directive with the linear model is used below. abline can be used with two arguments: intercept and slope.
+#b.User-specified Lines:Draw a line that has point y=12 for x=0 and y=0 for x=10. First Concatenate x points and y points as c(0,10) and c(12,0) respectively.
+#Use lines directive for user specified lines.Use lty=2 (line type to number 2) for user specified lines to diffrentiate between the lines.
+
+```{r}
+plot(x,y,pch=2,ylab="Response Variable",xlab="Explantory Variable")
+
+abline(lm(y~x))
+
+lines(c(0,10), c(12,0), lty=2)
+```
+
+#3.Adding more points to graph:Add 5 new values to both explanatory (let say v) and response variable(let say w).
+#a. To add new points in the same graph, use points directive. 
+#b. To diffrenetiate the new and old points, we use plotting character 3(pch=3). 
+#c. To fit a separate regression line (abline is used) for new data set (use line type to number 3 for new line) is used.
+```{r}
+plot(x,y,pch=2,ylab="Response Variable",xlab="Explantory Variable")
+abline( lm (y~x) )
+lines(c(0,10), c(12,0), lty=2)
+v<-c(2,4,6,8,10)
+w<-c(8,5,6,6,2)
+points(v, w, pch=3)
+abline(lm(w~v), lty=3)
+```
+
+#Plotting region is not rescaled when you add new points or lines in the graph. It is defined when the plot directive is executed.
+
+#4.Box Plots for Categorical Explanatory Variables:
+#Categorical variables are factors with 2 or more levels. We define sex as a factor with a level as male and female.
+```{r}
+sex<-c("male", "female")
+```
+#Read the weather file from the directory. header=T means we have name of the variable in the first row of the column.Using names command, we can see what are the variables present in the weather file.
+#attach is used to attach the data frame to weather file. To declare month as a factor, we use month<-factor(month). 
+#To check whether variable is factor or not, use is.factor directive.
+#To plot the graph between upper and month. Since the month is a factor and first variable, we get a box plot instead of a scatter plot. Same syntax is used (plot(x,y)). 
+```{r}
+weather<- read.csv("C:\\Users\\Sweta\\Documents\\Data\\weather.csv", header=T)
+names(weather)
+attach(weather)
+month<-factor(month)
+is.factor(month)
+plot(month,upper)
+```
+
+#Interpretaion of box plot: Box plot gives an idea about the distribution and shape(skewness) of the data. The lower and upper edges of the box plot give 25th and 75th percentiles of the data. Whiskers are horizontal lines connected through the dashed line to the box. Few outliers ( that is beyond the whiskers) were observed in the dataset. Strong line inside the box shows the median. For example, in September month, range of upper temperatures was more than lower temperature.
+
+#5. Colors in R: For graphical representation, we can use colors instead of plotting in black and white colors.
+
+#Create a pie chart divided into 30 equal sizes with width 1 and fill with 30 different colors.Rainbow is used to fill the color. Radius directive is used to set the size of pie chart.
+```{r}
+pie(rep(1, 30), col = rainbow(30), radius = 0.9)
+```
+
+#Similarly, create a pie chart divided into 10 equal sizes with width 1 and fill with 10 different colors.
+```{r}
+pie(rep(1,10), col=rainbow(10), radius=0.5)
+```
+
+#6. Colors in graph:
+#we create sequence from 0 to 10 with 0.1 as difference between previous and current value. We assign this sequence to x for which value of y will be calculated and plotted. 
+#y1 and y2 vectors are defined as below.We choose backgroud color as ghostwhite by using par command for seting graphical parameter.
+#We plot set of blank axes with y2 vector as y2 values will be higher than y1.
+#We draw lines y2 with red color and y1 with blue color.
+```{r}
+x<-seq(0,10,0.1)
+y1<- 2 + 3 * x -0.25 * x ^ 2
+y2<- 3 + 3.3 * x -0.3 * x ^ 2
+par(bg="ghostwhite") 
+plot(x,y2,type="n",ylab="") 
+lines(x,y2,col="red")
+lines(x,y1,col="blue") 
+```
+
+#7. Coloured in Scatter plot:
+#Read the jantemp file from the directory. Here, header=T means we have the name of the variable in the first row of the column.
+#attach the data frame to jantemp file.
+#Using names command, we can see what are the variables present in the jantemp file.
+#Find minimum and maximum values of y to set the axes length.
+#plotting the blank axes with range of y as -12 to 12 and lable of y as temperature.
+#Plotting the points of tmin in blue color with plotting character 16.
+#Plotting the points of tmax in red color with plotting character 16.
+#Joining the points of tmin and tmax for every single day (for all 31 days) with line directive. (keeping color of the line as green)
+#Plot can give insight about tomorrow's weather.
+```{r}
+jantemp<- read.table("C:\\Users\\Sweta\\Documents\\Data\\jantemp.txt", header=T)
+attach(jantemp)
+names(jantemp)
+max(tmax)
+min(tmin)
+plot(day,tmax,ylim=c(-12,12),type="n",ylab="Temperature") 
+points(day,tmin,col="blue",pch=16) 
+points(day,tmax,col="red",pch=16)
+for (i in 1:31) lines(c(i ,i ), c( tmin[i], tmax[i] ), col="green")
+```
+#8. Color with Histograms
+#Plot a histogram with normal distribution (where mean=0, standard deviation=1) for 1000 random numbers. 
+#Keep background color as cornsilk for the histogram.
+#Keep color of the bar as lavender with no graph title.Removing main ="" to keep the graph title.
+```{r}
+x <- rnorm(1000)
+par(bg = "cornsilk")
+hist(x, col = "lavender",  main = "")
+hist(x, col = "lavender")
+```
+
+#9. Color with pie charts
+#6 insects landed on different plant species with different proportions.
+#Putting lables for each segments of pie.
+#Fill different colors in different segments with vector col.
+```{r}
+fate <- c(0.12, 0.3, 0.26, 0.16, 0.04, 0.12)
+names(fate) <-c ("Ragwort","Thistle","Willowherb","Rush","Orchid","Knapweed") 
+pie(fate, col = c("purple", "violetred1",  "green3", "cornsilk", "cyan",  "white")) 
+```
+
+#10. Multivariate plots
+#Read the pollute file from the directory. Here, header=T means we have the name of the variable in the first row of the column. #attach the data frame to pollution file. #Using names command, we can see what are the variables present in the pollute file.
+#Pair directive is used for matrix of plots  of y against x and x against y for all variables present in pollute.txt file.
+```{r}
+pollution<-read.table("C:\\Users\\Sweta\\Documents\\Data\\pollute.txt", header=T) 
+attach(pollution)
+names(pollution)
+pairs(pollution,panel=panel.smooth)
+```
+
+#In the graph, rows represent the y variable (response variable) in the matrix and columns represent the x variable(explanatory variable). For example: Industry is on the y -axis for 3rd row similarly Wind is on the x-axis for 5th column. Graph suggest that there is strong correlation between industry and population. Since, data is categorical, sometimes plots are not very clear to show others.
+
+#11. Tree based models#For tree based model, install the package name as Tree. Load the code from the library 
+#To check how explanatory variables are correlated,how they interact with each other, how response and explanatory variables are related (eg.: linear or non linear); we use tree model. 
+#regtree shows that pollution is function of all explanatory variables. The dot option after tilde sign in the above line indicate that it included all variables.
+#regtree object has regression tree, we will plot and name it.
+```{r}
+library(tree)
+regtree <-tree(Pollution ~ . , data=pollution)
+plot(regtree) 
+text(regtree) 
+```
+
+#Tree shows that the main dominant explanatory variable is Industry with threshold value as 748. The mean value of pollution at high level of Industry is 67 while for low level of indutry, population is significant variable with threshold as 190. At low level of population, air pollution is 43.43 while at high level, wetdays (with theshold 180) is significant. For low value of wetdays, air pollution is 12 while for high value of wetdays, temperature variable is significant (with threshold value 59.35). At low temperature, wind is significant with theshold as 9.65 and air pollution as 33.88 in low value. For high value of wind and temperature, air pollution is 23 and 15.
+
+#12. Conditioning plots:
+#attach the data frame to pollution file. 
+#coplot directive is used for conditional plotting of variables. In plot, y-axis has response variable as Pollution and x-axis has explanatory variable as Temperature. We plot this graph with respect to different ranges of rain.
+```{r}
+attach(pollution)
+coplot(Pollution~Temp | Rain)
+```
+
+#The graph illustrate that there are 6 different ranges of rain with distinct width. Lower graph shows the plot between pollution and temperature for 6 ranges of rain where lowest rainfall captured in lower left panel while highest rainfall captured in upper right panel.
+
+#13. Graphical parameter par:
+#mfrow helps to keep the number of graphs per screen. We need to mention number of rows and number of plots per rows.Use concatenate to make vector.#if number of rows is 1 with number of plots per rows is 1, par(mfrow=c(1,1)) can be used.
+#if number of rows is 1 with number of plots per rows is 2, par(mfrow=c(1,2)) can be used.#if number of rows is 2 with number of plots per rows is 2, par(mfrow=c(2,2)).#Note: a. We need to run plot directive each time when you change the parameters of mfrow. b. Character expnasion will be set to 0.5 if 2 or more graphs has to be shown per row or column.
+```{r}
+par(mfrow=c(1,1)) 
+ 
+par(mfrow=c(1,2))
+
+par(mfrow=c(2,2))
+
+par(mfrow=c(1,1)) 
+```
+#running above line to get one row and one graph in row. 
+
+#14. Logarithmic axes:
+#Read the curvedata file from the directory. Here, header=T means we have the name of the variable in the first row of the column. #attach the data frame to curvedata file. #Using names command, we can see what are the variables present in the curvedata file.
+# To keep 4 graph in 2 rows with 2 graphs in each row. 
+#plot(xvalues,yvalues,type="l") gives graph for xvalues vs yvalues.
+#plot(xvalues,yvalues,log="xy",type="l") gives graph for logx vs logy.
+#plot(xvalues,yvalues,log="y", type="l") gives graph for x vs logy.
+#plot(xvalues,yvalues,log="x", type="l) gives graph for logx vs y
+```{r}
+plotdata<- read.table("C:\\Users\\Sweta\\Documents\\Data\\curvedata.txt", header=T)
+attach(plotdata)
+names(plotdata)
+par(mfrow=c(2,2))
+plot(xvalues,yvalues,type="l") 
+plot(xvalues,yvalues,log="xy",type="l")
+plot(xvalues,yvalues,log="y", type="l")
+plot(xvalues,yvalues,log="x", type="l") 
+```
+
+#15. Scaling the axes:
+#xlim and ylim are used to change the upper and lower values of x and y axes respectively.
+#par(mfrow=c(1,2)) gives two graph in one row.
+#plot(xvalues,yvalues,type="l") gives graph for xvalue vs yvalue. 
+#plot(xvalues,yvalues,ylim=c(0,50),type="l") set the upper and lower limit of y-axis as 50 and 0 respectively.
+```{r}
+par(mfrow=c(1,2))
+plot(xvalues,yvalues,type="l")
+plot(xvalues,yvalues,ylim=c(0,50),type="l")
+```
+
+#Note: If you want to compare two graphs or put several lines/points in same axes, scaling the x and y axes would be useful.
+
+#16. Text in the graphs:
+# Loacte text as "(b)" for particular point (0.8,45) in the graph.
+
+```{r}
+plot(xvalues,yvalues,ylim=c(0,50),type="l")
+text (0.8,45,"(b)")
+```
+
+#Read the map.places file from the directory. #attach the data frame to map.places file. #Using names command, we can see what are the variables present in the map.places file.#similarly read the bowens file.
+#For changing northings, north < 60 is TRUE to nn<north+100 and others are not aleterd.
+#Easting is from 20 to 100 and northing is from 60 to 110. We are scaling the axes with type="n".
+#We are putting the name of the place with text directive in position east and nn. We are using "which" to find the place in the wanted variable.
+```{r}
+mapplaces<- read.table("C:\\Users\\Sweta\\Documents\\Data\\mapplaces.txt", header=T)
+attach(mapplaces)
+names(mapplaces)
+mapdata<-read.csv("C:\\Users\\Sweta\\Documents\\Data\\bowens.csv",header=T) 
+attach(mapdata) 
+names(mapdata)
+
+nn <-ifelse (north<60,north+100,north)
+plot(c(20,100),c(60,110),type="n",xlab="",ylab="")
+
+for(i in 1:length(wanted)){
+ii<-which(place==as.character(wanted[i])) 
+text(east[ii],nn[ii],as.character(place[ii]),cex=0.6)}
+```
+
+#17. Character alignmnet:
+#Create vector as labels and assign first 10 letters in series.
+#plot(1:10,1:10,type="n"):we used type="n" for scaling the axes x and y. 
+#text(1:10,1:10,labels,cex=2): it is used to put the all 10 labels with character expansion set as 2. 
+#plot(1:10,1:10,type="n"): we used type="n" for scaling the axes x and y
+#text(1:10,10:1,labels,cex=2,srt=180): it is used to put the all labels with character expansion set as 2 where srt=180 turns the data upside down.
+```{r}
+labels<-letters[1:10]
+par(mfrow=c(1,2))
+plot(1:10,1:10,type="n")
+text(1:10,1:10,labels,cex=2)
+plot(1:10,1:10,type="n")
+text(1:10,10:1,labels,cex=2,srt=180)
+```
+ 

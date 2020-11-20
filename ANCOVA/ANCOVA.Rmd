@@ -1,0 +1,232 @@
+#Name: Sweta Kumari 
+#ANALYSIS OF COVARIANCE
+
+#ANCOVA calculations
+```{r}
+photoperiod<-read.table("C:\\Users\\Sweta\\Documents\\Data\\Photoperiod.txt",header=T)
+attach(photoperiod)
+names(photoperiod) 
+```
+#Let say Photoperiod=x and Growth=y
+#Find the sum of x and sum of x square
+```{r}
+sum(Photoperiod);sum(Photoperiod^2)
+```
+#Find the sum of y and sum of y square
+```{r}
+sum(Growth);sum(Growth^2) 
+```
+#Find the sum of x*y
+```{r}
+sum(Growth*Photoperiod)
+```
+#Find the sum and sum of squares
+#Calculate the sum of growth according to Genotype
+```{r}
+tapply(Growth,Genotype,sum)
+```
+#Calculate the sum of growth square according to Genotype
+```{r}
+tapply(Growth^2,Genotype,sum) 
+```
+#Calculate the sum of Photoperiod according to Genotype
+```{r}
+tapply(Photoperiod,Genotype,sum)
+```
+#Calculate the sum of Photoperiod square according to Genotype
+```{r}
+tapply(Photoperiod^2,Genotype,sum) 
+```
+#Calculate the sum of growth*Photoperiod according to Genotype
+```{r}
+tapply(Photoperiod*Growth,Genotype,sum)
+```
+#Analysis of Covariance in R
+#Use lm directive and capture the output in model object
+```{r}
+options(contrasts=c("contr.treatment","contr.poly")) 
+model<-lm(Growth~Genotype*Photoperiod) 
+```
+#Summarize the model
+```{r}
+summary(model)
+```
+#Use aov directive to get anova table for model
+```{r}
+model<-aov(Growth~Genotype*Photoperiod) 
+```
+#Summarize the model
+```{r}
+summary(model) 
+```
+#use summary.aov to get ANOVA table
+```{r}
+summary.aov(model)
+```
+#Use summary.lm to get the parameters and standard error.
+```{r}
+summary.lm(model) 
+```
+#Ancova with different values of the covariates
+```{r}
+ipomopsis<-read.csv("C:\\Users\\Sweta\\Documents\\Data\\ipomopsis.csv",header=T)
+attach(ipomopsis)
+names(ipomopsis)
+```
+#Find sum of root and root^2
+```{r}
+sum(Root);sum(Root^2)
+```
+#Find sum of fruit and fruit^2
+```{r}
+sum(Fruit);sum(Fruit^2) 
+```
+#Find sum of root*fruit
+```{r}
+sum(Root*Fruit)
+```
+#Let's consider only grazed plant data
+```{r}
+sum(Root[Grazing=="Grazed"]);sum(Root[Grazing=="Grazed"]^2) 
+```
+#Now consider ungrazed plant data
+```{r}
+sum(Root[Grazing=="Ungrazed"]);sum(Root[Grazing=="Ungrazed"]^2)
+```
+#Let's check data on fruits for grazed plant data
+```{r}
+sum(Fruit[Grazing=="Grazed"]);sum(Fruit[Grazing=="Grazed"]^2)
+```
+#Similarly fruit data for ungrazed plant 
+```{r}
+sum(Fruit[Grazing=="Ungrazed"]);sum(Fruit[Grazing=="Ungrazed"]^2) 
+```
+#To get data for sum of products of root and fruit for grazed plant.
+```{r}
+sum(Root[Grazing=="Grazed"]*Fruit[Grazing=="Grazed"]) 
+```
+
+#Similarly for ungrazed plant
+```{r}
+sum(Root[Grazing=="Ungrazed"]*Fruit[Grazing=="Ungrazed"])
+```
+
+#Ancova in R using lm 
+#Find the mean of fruit for grazed and ungrazed plant
+```{r}
+tapply(Fruit,Grazing, mean)
+```
+#Let's plot the graph
+```{r}
+plot(Root,Fruit)
+```
+
+#Let's do blank plot by type=n; #select grazed and ungrazed points for fruits and root;# Use plotting character = 16 for plotting the points
+```{r}
+plot(Root,Fruit,type="n") 
+points(Root[Grazing=="Ungrazed"],Fruit[Grazing=="Ungrazed"])
+points(Root[Grazing=="Grazed"],Fruit[Grazing=="Grazed"],pch=16)
+```
+
+
+#To get different slopes and inercepts of both variables, use * asterisk mark .
+```{r}
+ancova<-lm(Fruit~Grazing*Root) 
+```
+#Summarize the result
+```{r}
+summary(ancova)
+```
+#ANOVA table for maximal model
+```{r}
+anova(ancova) 
+```
+#update the ancova model by removing the interaction between grazing and roots
+```{r}
+ancova2<-update(ancova, ~ . - Grazing:Root)
+```
+#Compare ancova and ancova2 model
+```{r}
+anova(ancova,ancova2) 
+```
+#Update ancova2 model by removing Grazing from the model
+```{r}
+ancova3<-update(ancova2, ~ . - Grazing) 
+```
+#Compare ancova2 and ancova3 model
+```{r}
+anova(ancova2,ancova3)
+```
+#Summary of ancova2 model
+```{r}
+summary(ancova2) 
+```
+#ANOVA table for ancova2 model
+```{r}
+anova(ancova2)
+```
+#Do model simplification using step directive called as automatic model-simplification directive
+```{r}
+step(ancova)
+```
+#Summary of ancova2
+```{r}
+summary(ancova2)
+```
+#Use abline directive to get the line; calling plot directive again
+```{r}
+plot(Root,Fruit)
+points(Root[Grazing=="Ungrazed"],Fruit[Grazing=="Ungrazed"])
+points(Root[Grazing=="Grazed"],Fruit[Grazing=="Grazed"],pch=16)
+abline(-127.829 , 23.56)
+abline(-127.829+36.1032 , 23.56)
+```
+
+#A more complex Ancova: 2 factors and 1 continuous covariate 
+```{r}
+gain<-read.table("C:\\Users\\Sweta\\Documents\\Data\\Gain.txt",header=T)
+attach(gain)
+names(gain) 
+```
+#We begin by considering all interaction
+```{r}
+m1<-lm(Weight~Sex*Age*Genotype)
+```
+#summarize m1 model
+```{r}
+summary(m1)
+```
+#Model simplication
+```{r}
+step(m1)
+```
+#Consider only variables (Don't consider interaction between the variables)
+```{r}
+m2<-aov(Weight~Sex+Age+Genotype)
+```
+#SUmmary of model m2
+```{r}
+summary(m2)
+```
+#To get standard error and other parameters
+```{r}
+summary.lm(m2)
+```
+#Factor level reduction
+```{r}
+newgen<-factor(1+(Genotype=="CloneB")+(Genotype=="CloneD")+ 2*(Genotype=="CloneC") + 2*(Genotype=="CloneE") + 3*(Genotype=="CloneF")) 
+newgen
+```
+#Use Sex, Age, newgen and define new model m3
+```{r}
+m3<-lm(Weight~Sex+Age+newgen)
+```
+#Compare anova table for m2 and m3
+```{r}
+anova(m2,m3) 
+```
+
+
+
+
+
